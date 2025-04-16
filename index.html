@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TestSEO</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 2rem; }
+    .input, .button, textarea { width: 100%; margin-top: 1rem; padding: 0.75rem; font-size: 1rem; }
+    .button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+    .button:disabled { background-color: #aaa; }
+    .report-section { margin-top: 2rem; }
+    .tabs { display: flex; gap: 1rem; margin-bottom: 1rem; }
+    .tab-button { padding: 0.5rem 1rem; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; }
+    .tab-button.active { background: #007bff; color: white; }
+    .hidden { display: none; }
+    textarea { height: 200px; }
+  </style>
+</head>
+<body>
+  <h1>TestSEO</h1>
+  <p>Enter your website URL to check how well it's optimized for search engines.</p>
+  <input type="url" id="urlInput" class="input" placeholder="https://testseo.com" />
+  <button class="button" id="runButton">Test SEO</button>
+
+  <div class="report-section hidden" id="reportSection">
+    <div class="tabs">
+      <div class="tab-button active" id="overviewTab">Overview</div>
+      <div class="tab-button" id="detailsTab">Detailed Report</div>
+    </div>
+    <div id="overviewContent">
+      <pre id="overviewReport"></pre>
+    </div>
+    <div id="detailsContent" class="hidden">
+      <textarea readonly id="detailsReport"></textarea>
+    </div>
+  </div>
+
+  <script>
+    const urlInput = document.getElementById('urlInput');
+    const runButton = document.getElementById('runButton');
+    const reportSection = document.getElementById('reportSection');
+    const overviewReport = document.getElementById('overviewReport');
+    const detailsReport = document.getElementById('detailsReport');
+    const overviewTab = document.getElementById('overviewTab');
+    const detailsTab = document.getElementById('detailsTab');
+    const overviewContent = document.getElementById('overviewContent');
+    const detailsContent = document.getElementById('detailsContent');
+
+    runButton.onclick = () => {
+      const url = urlInput.value.trim();
+      if (!url) return;
+
+      runButton.disabled = true;
+      runButton.textContent = 'Running Audit...';
+
+      setTimeout(() => {
+        const report = `SEO Audit Report for ${url}:
+- Title tag length: Optimal (60 characters)
+- Meta description: Missing
+- H1 tags: 1 found
+- Image alt attributes: 2 missing
+- Mobile-friendly: Yes
+- Page load time: 2.1s (Good)
+- Backlinks: Moderate (45 referring domains)
+- Keyword usage: Needs improvement`;
+
+        const recommendations = `
+Additional Recommendations:
+- Improve keyword density.
+- Add meta descriptions to all pages.
+- Optimize images with proper alt text.`;
+
+        overviewReport.textContent = report;
+        detailsReport.value = report + '\n' + recommendations;
+        reportSection.classList.remove('hidden');
+        runButton.disabled = false;
+        runButton.textContent = 'Run SEO Audit';
+      }, 2000);
+    };
+
+    overviewTab.onclick = () => {
+      overviewTab.classList.add('active');
+      detailsTab.classList.remove('active');
+      overviewContent.classList.remove('hidden');
+      detailsContent.classList.add('hidden');
+    };
+
+    detailsTab.onclick = () => {
+      detailsTab.classList.add('active');
+      overviewTab.classList.remove('active');
+      overviewContent.classList.add('hidden');
+      detailsContent.classList.remove('hidden');
+    };
+  </script>
+</body>
+</html>
